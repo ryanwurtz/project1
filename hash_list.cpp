@@ -1,20 +1,82 @@
 #include "hash_list.h"
 
-hash_list::hash_list() {}
+hash_list::hash_list() {
+    head = NULL;
+    size = 0;
+}
 
 /**-----------------------------------------------------------------------------------
  * START Part 1
  *------------------------------------------------------------------------------------*/
 
-void hash_list::insert(int key, float value) {}
+void hash_list::insert(int key, float value) {
 
-std::optional<float> hash_list::get_value(int key) const { return std::nullopt; }
+    node *ptr = head;
+    node *oldnode = NULL;
+    while (ptr != NULL) {
+        if (ptr->key == key) 
+        {
+            ptr->value = value;
+            return;
+        }
+        oldnode = ptr;
+        ptr = ptr->next;
+    }   
+    node *newnode = new node();
+    size++;
+    newnode->key = key;
+    newnode->value = value;
+    newnode->next = NULL;
+    if(head == NULL)
+        head = newnode;
+    else
+        oldnode->next = newnode;
+    return;
+}
 
-bool hash_list::remove(int key) { return false; }
+std::optional<float> hash_list::get_value(int key) const { 
+    node *ptr = head;
+    while (ptr != NULL) {
+        if (ptr->key == key){
+            std::optional<float> val = ptr->value;
+            return val;
+        } 
+        ptr = ptr->next;
+    }
+    return std::nullopt; }
 
-size_t hash_list::get_size() const { return 0; }
+bool hash_list::remove(int key) { 
+    node *ptr = head;
+    node *oldnode = NULL;
+    while (ptr != NULL) {
+        if (ptr->key == key){
+            if(head != ptr)
+                oldnode->next = ptr->next;
+            else
+                head = ptr->next;
+            delete ptr;
+            size--;
+            return true;
+        }
+        oldnode = ptr;
+        ptr = ptr->next;
+    }
+    return false; 
+    }
 
-hash_list::~hash_list() {}
+size_t hash_list::get_size() const { 
+    return size; }
+
+hash_list::~hash_list() {
+    node *ptr = head;
+    node *old = NULL;
+    while(ptr != NULL)
+    {
+        old = ptr;
+        ptr = ptr->next;
+        delete old;
+    }    
+}
 
 /**-----------------------------------------------------------------------------------
  * END Part 1
