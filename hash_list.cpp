@@ -87,20 +87,56 @@ hash_list::~hash_list() {
  * START Part 2
  *------------------------------------------------------------------------------------*/
 
-hash_list::hash_list(const hash_list &other) {}
+hash_list::hash_list(const hash_list &other) {
+    
+}
 
-hash_list &hash_list::operator=(const hash_list &other) { return *this; }
+hash_list &hash_list::operator=(const hash_list &other) { 
+    
+    return *this; 
+}
 
-void hash_list::reset_iter() {}
+void hash_list::reset_iter() {
+    if (size == 0) {
+        iter_ptr = NULL;
+    }
+    else {
+        iter_ptr = head;
+    }
+}
 
 
-void hash_list::increment_iter() {}
+void hash_list::increment_iter() {
+    if (iter_ptr == NULL) {
+        return;
+    }
+    else if (iter_ptr->next == NULL) {
+        iter_ptr = NULL;
+    }
+    else {
+        iter_ptr = iter_ptr->next;
+    }
+}
 
 
-std::optional<std::pair<const int *, float *>> hash_list::get_iter_value() { return std::nullopt; }
+std::optional<std::pair<const int *, float *>> hash_list::get_iter_value() { 
+    if (iter_ptr == NULL) {
+        return std::nullopt;
+    }
+    else {
+        return std::optional<std::pair<const int *,float *>> = (const int *)iter_ptr->key,(float *)iter_ptr->value;
+    } 
+}
 
 
-bool hash_list::iter_at_end() { return false; }
+bool hash_list::iter_at_end() { 
+    if (iter_ptr == NULL) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 /**-----------------------------------------------------------------------------------
  * END Part 2
  *------------------------------------------------------------------------------------*/
