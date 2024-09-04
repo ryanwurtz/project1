@@ -3,6 +3,7 @@
 hash_list::hash_list() {
     head = NULL;
     size = 0;
+    iter_ptr = NULL;
 }
 
 /**-----------------------------------------------------------------------------------
@@ -88,12 +89,24 @@ hash_list::~hash_list() {
  *------------------------------------------------------------------------------------*/
 
 hash_list::hash_list(const hash_list &other) {
+    size = other.size;
+    head = other.head;
+    iter_ptr = other.iter_ptr;
     
 }
 
 hash_list &hash_list::operator=(const hash_list &other) { 
     
-    return *this; 
+    delete((*this).head);
+    delete((*this).iter_ptr);
+    (*this).head = new node();
+    (*this).iter_ptr = new node(); 
+    (*this).size = other.size;
+    (*this).head = other.head;
+    (*this).iter_ptr = other.iter_ptr;
+     
+    
+    return *this;
 }
 
 void hash_list::reset_iter() {
@@ -124,7 +137,7 @@ std::optional<std::pair<const int *, float *>> hash_list::get_iter_value() {
         return std::nullopt;
     }
     else {
-        return std::optional<std::pair<const int *,float *>> = (const int *)iter_ptr->key,(float *)iter_ptr->value;
+        return std::optional<std::pair<const int *, float *>>({&iter_ptr->key, &iter_ptr->value});
     } 
 }
 
